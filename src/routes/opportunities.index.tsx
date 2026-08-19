@@ -18,12 +18,13 @@ import {
 import { EMPLOYMENT_TYPES, fetchCategories, fetchPublicOpportunities } from "@/lib/site";
 
 type Search = {
-  q?: string;
-  location?: string;
-  category?: string;
-  type?: string;
-  company?: string;
+  q?: string | undefined;
+  location?: string | undefined;
+  category?: string | undefined;
+  type?: string | undefined;
+  company?: string | undefined;
 };
+
 
 export const Route = createFileRoute("/opportunities/")({
   validateSearch: (search: Record<string, unknown>): Search => ({
@@ -50,7 +51,7 @@ export const Route = createFileRoute("/opportunities/")({
 
 function OpportunitiesPage() {
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/opportunities" });
+  const navigate = useNavigate({ from: "/opportunities/" });
 
   const { data: jobs = [], isLoading } = useQuery({
     queryKey: ["opportunities"],
@@ -59,7 +60,8 @@ function OpportunitiesPage() {
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
 
   const set = (patch: Partial<Search>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }) as Search });
+    navigate({ to: ".", search: (prev: Search) => ({ ...prev, ...patch }) });
+
 
   const results = useMemo(() => {
     const q = (search.q ?? "").toLowerCase();
@@ -154,7 +156,7 @@ function OpportunitiesPage() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => navigate({ search: {} as Search })}
+                onClick={() => navigate({ to: ".", search: {} })}
               >
                 Clear Filters
               </Button>
