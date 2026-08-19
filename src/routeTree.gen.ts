@@ -24,6 +24,10 @@ import { Route as CompaniesSlugRouteImport } from './routes/companies.$slug'
 import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities.index'
 import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
+import { Route as AuthenticatedAdminCompaniesRouteImport } from './routes/_authenticated/admin.companies'
+import { Route as AuthenticatedAdminEnquiriesRouteImport } from './routes/_authenticated/admin.enquiries'
+import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminOpportunitiesIndexRouteImport } from './routes/_authenticated/admin.opportunities.index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -100,6 +104,30 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminCategoriesRoute =
+  AuthenticatedAdminCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCompaniesRoute =
+  AuthenticatedAdminCompaniesRouteImport.update({
+    id: '/companies',
+    path: '/companies',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminEnquiriesRoute =
+  AuthenticatedAdminEnquiriesRouteImport.update({
+    id: '/enquiries',
+    path: '/enquiries',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSettingsRoute =
+  AuthenticatedAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminOpportunitiesIndexRoute =
   AuthenticatedAdminOpportunitiesIndexRouteImport.update({
     id: '/opportunities/',
@@ -121,6 +149,10 @@ export interface FileRoutesByFullPath {
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/companies/': typeof CompaniesIndexRoute
   '/opportunities/': typeof OpportunitiesIndexRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/opportunities/': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
@@ -137,6 +169,10 @@ export interface FileRoutesByTo {
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/companies': typeof CompaniesIndexRoute
   '/opportunities': typeof OpportunitiesIndexRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
@@ -156,6 +192,10 @@ export interface FileRoutesById {
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/companies/': typeof CompaniesIndexRoute
   '/opportunities/': typeof OpportunitiesIndexRoute
+  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/companies': typeof AuthenticatedAdminCompaniesRoute
+  '/_authenticated/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/opportunities/': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
@@ -175,6 +215,10 @@ export interface FileRouteTypes {
     | '/opportunities/$slug'
     | '/companies/'
     | '/opportunities/'
+    | '/admin/categories'
+    | '/admin/companies'
+    | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin/'
     | '/admin/opportunities/'
   fileRoutesByTo: FileRoutesByTo
@@ -191,6 +235,10 @@ export interface FileRouteTypes {
     | '/opportunities/$slug'
     | '/companies'
     | '/opportunities'
+    | '/admin/categories'
+    | '/admin/companies'
+    | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin'
     | '/admin/opportunities'
   id:
@@ -209,6 +257,10 @@ export interface FileRouteTypes {
     | '/opportunities/$slug'
     | '/companies/'
     | '/opportunities/'
+    | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/companies'
+    | '/_authenticated/admin/enquiries'
+    | '/_authenticated/admin/settings'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/opportunities/'
   fileRoutesById: FileRoutesById
@@ -336,6 +388,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/categories': {
+      id: '/_authenticated/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/companies': {
+      id: '/_authenticated/admin/companies'
+      path: '/companies'
+      fullPath: '/admin/companies'
+      preLoaderRoute: typeof AuthenticatedAdminCompaniesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/enquiries': {
+      id: '/_authenticated/admin/enquiries'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries'
+      preLoaderRoute: typeof AuthenticatedAdminEnquiriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/settings': {
+      id: '/_authenticated/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/opportunities/': {
       id: '/_authenticated/admin/opportunities/'
       path: '/opportunities'
@@ -347,11 +427,19 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminCompaniesRoute: typeof AuthenticatedAdminCompaniesRoute
+  AuthenticatedAdminEnquiriesRoute: typeof AuthenticatedAdminEnquiriesRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminOpportunitiesIndexRoute: typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+  AuthenticatedAdminCompaniesRoute: AuthenticatedAdminCompaniesRoute,
+  AuthenticatedAdminEnquiriesRoute: AuthenticatedAdminEnquiriesRoute,
+  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedAdminOpportunitiesIndexRoute:
     AuthenticatedAdminOpportunitiesIndexRoute,

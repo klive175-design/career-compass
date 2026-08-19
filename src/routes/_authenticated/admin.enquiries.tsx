@@ -40,7 +40,7 @@ function AdminEnquiries() {
 
   const update = useMutation({
     mutationFn: async ({ id, patch }: { id: string; patch: Record<string, unknown> }) => {
-      const { error } = await supabase.from("contact_enquiries").update(patch).eq("id", id);
+      const { error } = await supabase.from("contact_enquiries").update(patch as never).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

@@ -48,7 +48,7 @@ function AdminSettings() {
     mutationFn: async () => {
       const id = (data as { id?: string } | null)?.id;
       if (!id) throw new Error("Settings row missing");
-      const { error } = await supabase.from("site_settings").update(form).eq("id", id);
+      const { error } = await supabase.from("site_settings").update(form as never).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
