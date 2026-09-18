@@ -19,6 +19,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as CompaniesIndexRouteImport } from './routes/companies.index'
 import { Route as CompaniesSlugRouteImport } from './routes/companies.$slug'
@@ -29,8 +30,10 @@ import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminCompaniesRouteImport } from './routes/_authenticated/admin.companies'
 import { Route as AuthenticatedAdminEnquiriesRouteImport } from './routes/_authenticated/admin.enquiries'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
+import { Route as AuthenticatedPortalIndexRouteImport } from './routes/_authenticated/portal.index'
 import { Route as AuthenticatedAdminOpportunitiesIndexRouteImport } from './routes/_authenticated/admin.opportunities.index'
 import { Route as AuthenticatedAdminOpportunitiesIdRouteImport } from './routes/_authenticated/admin.opportunities.$id'
+import { Route as AuthenticatedPortalApplicationsIdRouteImport } from './routes/_authenticated/portal.applications.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -79,6 +82,11 @@ const TermsRoute = TermsRouteImport.update({
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
@@ -135,6 +143,12 @@ const AuthenticatedAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedPortalIndexRoute =
+  AuthenticatedPortalIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
 const AuthenticatedAdminOpportunitiesIndexRoute =
   AuthenticatedAdminOpportunitiesIndexRouteImport.update({
     id: '/opportunities/',
@@ -147,6 +161,12 @@ const AuthenticatedAdminOpportunitiesIdRoute =
     path: '/opportunities/$id',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedPortalApplicationsIdRoute =
+  AuthenticatedPortalApplicationsIdRouteImport.update({
+    id: '/applications/$id',
+    path: '/applications/$id',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -158,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/portal': typeof AuthenticatedPortalRouteWithChildren
   '/category/$slug': typeof CategorySlugRoute
   '/companies/$slug': typeof CompaniesSlugRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
@@ -168,7 +189,9 @@ export interface FileRoutesByFullPath {
   '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/portal/': typeof AuthenticatedPortalIndexRoute
   '/admin/opportunities/$id': typeof AuthenticatedAdminOpportunitiesIdRoute
+  '/portal/applications/$id': typeof AuthenticatedPortalApplicationsIdRoute
   '/admin/opportunities/': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -190,7 +213,9 @@ export interface FileRoutesByTo {
   '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/portal': typeof AuthenticatedPortalIndexRoute
   '/admin/opportunities/$id': typeof AuthenticatedAdminOpportunitiesIdRoute
+  '/portal/applications/$id': typeof AuthenticatedPortalApplicationsIdRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
 export interface FileRoutesById {
@@ -205,6 +230,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/portal': typeof AuthenticatedPortalRouteWithChildren
   '/category/$slug': typeof CategorySlugRoute
   '/companies/$slug': typeof CompaniesSlugRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
@@ -215,7 +241,9 @@ export interface FileRoutesById {
   '/_authenticated/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/portal/': typeof AuthenticatedPortalIndexRoute
   '/_authenticated/admin/opportunities/$id': typeof AuthenticatedAdminOpportunitiesIdRoute
+  '/_authenticated/portal/applications/$id': typeof AuthenticatedPortalApplicationsIdRoute
   '/_authenticated/admin/opportunities/': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
 export interface FileRouteTypes {
@@ -230,6 +258,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/admin'
+    | '/portal'
     | '/category/$slug'
     | '/companies/$slug'
     | '/opportunities/$slug'
@@ -240,7 +269,9 @@ export interface FileRouteTypes {
     | '/admin/enquiries'
     | '/admin/settings'
     | '/admin/'
+    | '/portal/'
     | '/admin/opportunities/$id'
+    | '/portal/applications/$id'
     | '/admin/opportunities/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -262,7 +293,9 @@ export interface FileRouteTypes {
     | '/admin/enquiries'
     | '/admin/settings'
     | '/admin'
+    | '/portal'
     | '/admin/opportunities/$id'
+    | '/portal/applications/$id'
     | '/admin/opportunities'
   id:
     | '__root__'
@@ -276,6 +309,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/_authenticated/admin'
+    | '/_authenticated/portal'
     | '/category/$slug'
     | '/companies/$slug'
     | '/opportunities/$slug'
@@ -286,7 +320,9 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/enquiries'
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/'
+    | '/_authenticated/portal/'
     | '/_authenticated/admin/opportunities/$id'
+    | '/_authenticated/portal/applications/$id'
     | '/_authenticated/admin/opportunities/'
   fileRoutesById: FileRoutesById
 }
@@ -379,6 +415,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal': {
+      id: '/_authenticated/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof AuthenticatedPortalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
@@ -449,6 +492,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/portal/': {
+      id: '/_authenticated/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof AuthenticatedPortalIndexRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
     '/_authenticated/admin/opportunities/': {
       id: '/_authenticated/admin/opportunities/'
       path: '/opportunities'
@@ -462,6 +512,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/opportunities/$id'
       preLoaderRoute: typeof AuthenticatedAdminOpportunitiesIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/portal/applications/$id': {
+      id: '/_authenticated/portal/applications/$id'
+      path: '/applications/$id'
+      fullPath: '/portal/applications/$id'
+      preLoaderRoute: typeof AuthenticatedPortalApplicationsIdRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
     }
   }
 }
@@ -491,12 +548,28 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
 const AuthenticatedAdminRouteWithChildren =
   AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
 
+interface AuthenticatedPortalRouteChildren {
+  AuthenticatedPortalIndexRoute: typeof AuthenticatedPortalIndexRoute
+  AuthenticatedPortalApplicationsIdRoute: typeof AuthenticatedPortalApplicationsIdRoute
+}
+
+const AuthenticatedPortalRouteChildren: AuthenticatedPortalRouteChildren = {
+  AuthenticatedPortalIndexRoute: AuthenticatedPortalIndexRoute,
+  AuthenticatedPortalApplicationsIdRoute:
+    AuthenticatedPortalApplicationsIdRoute,
+}
+
+const AuthenticatedPortalRouteWithChildren =
+  AuthenticatedPortalRoute._addFileChildren(AuthenticatedPortalRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedPortalRoute: typeof AuthenticatedPortalRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedPortalRoute: AuthenticatedPortalRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
