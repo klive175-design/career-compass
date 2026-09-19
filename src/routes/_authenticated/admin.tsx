@@ -11,6 +11,7 @@ import {
   Briefcase,
   Settings,
   ExternalLink,
+  Users,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ const links = [
   { to: "/admin/opportunities", label: "Opportunities", icon: Briefcase, exact: false },
   { to: "/admin/categories", label: "Categories", icon: FolderTree, exact: false },
   { to: "/admin/companies", label: "Companies", icon: Building2, exact: false },
+  { to: "/admin/applications", label: "Applications", icon: Users, exact: false },
   { to: "/admin/enquiries", label: "Enquiries", icon: Inbox, exact: false },
   { to: "/admin/settings", label: "Site settings", icon: Settings, exact: false },
 ] as const;
