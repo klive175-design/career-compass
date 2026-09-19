@@ -289,17 +289,18 @@ function OpportunityDetail() {
               <Field label="Status" value={job.status} />
             </dl>
 
+            <Button asChild size="lg" className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              <Link to="/apply" search={{ job: job.slug }}>
+                Apply Now
+              </Link>
+            </Button>
             {applyHref ? (
-              <Button asChild size="lg" className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              <Button asChild variant="outline" size="lg" className="mt-3 w-full">
                 <a href={applyHref} target="_blank" rel="noopener noreferrer">
-                  Apply Now
+                  Apply directly with employer
                 </a>
               </Button>
-            ) : (
-              <Button asChild size="lg" className="mt-5 w-full">
-                <Link to="/contact">Contact us to apply</Link>
-              </Button>
-            )}
+            ) : null}
           </div>
 
           <div className="rounded-xl border border-border bg-card p-6 shadow-card">
