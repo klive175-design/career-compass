@@ -21,14 +21,17 @@ export const Route = createFileRoute("/_authenticated/admin/")({
 });
 
 async function loadStats() {
-  const [opps, cats, comps, enq] = await Promise.all([
+  const [opps, cats, comps, enq, apps] = await Promise.all([
     supabase.from("opportunities").select("id,status,featured,deadline"),
     supabase.from("categories").select("id"),
     supabase.from("companies").select("id"),
     supabase.from("contact_enquiries").select("id,status"),
+    supabase.from("applications").select("id,status"),
   ]);
   const rows = opps.data ?? [];
+  const appRows = apps.data ?? [];
   const count = (s: string) => rows.filter((r) => r.status === s).length;
+  const appCount = (s: string) => appRows.filter((r) => r.status === s).length;
   return {
     total: rows.length,
     published: count("published"),
@@ -43,6 +46,11 @@ async function loadStats() {
     companies: (comps.data ?? []).length,
     enquiries: (enq.data ?? []).length,
     newEnquiries: (enq.data ?? []).filter((e) => e.status === "new").length,
+    applications: appRows.length,
+    appsPending: appCount("pending"),
+    appsReview: appCount("under_review"),
+    appsApproved: appCount("approved"),
+    appsRejected: appCount("rejected"),
   };
 }
 
