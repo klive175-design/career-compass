@@ -25,7 +25,7 @@ export const Route = createFileRoute("/_authenticated/portal/apply")({
   validateSearch: (search: Record<string, unknown>) => ({
     job: typeof search["job"] === "string" ? (search["job"] as string) : "",
   }),
-  component: ApplicationForm;
+  component: ApplicationForm,
 });
 
 const schema = z.object({
