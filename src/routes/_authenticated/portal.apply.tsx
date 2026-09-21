@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Loader2, Upload } from "lucide-react";
 import { z } from "zod";
@@ -345,10 +345,17 @@ function Field({
   error?: string | undefined;
   children: React.ReactNode;
 }) {
+  const id = label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
-      <Label className="text-sm">{label}</Label>
-      <div className="mt-1.5">{children}</div>
+      <Label htmlFor={id} className="text-sm">
+        {label}
+      </Label>
+      <div className="mt-1.5">
+        {React.isValidElement(children)
+          ? React.cloneElement(children as React.ReactElement<{ id?: string }>, { id })
+          : children}
+      </div>
       {error ? <p className="mt-1 text-xs text-destructive">{error}</p> : null}
     </div>
   );
