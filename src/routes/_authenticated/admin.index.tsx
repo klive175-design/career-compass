@@ -10,6 +10,7 @@ import {
   FolderTree,
   Inbox,
   Star,
+  Users,
   XCircle,
 } from "lucide-react";
 
@@ -58,6 +59,11 @@ function Dashboard() {
   const { data } = useQuery({ queryKey: ["admin-stats"], queryFn: loadStats });
 
   const cards = [
+    { label: "Total applications", value: data?.applications, icon: Users },
+    { label: "Pending applications", value: data?.appsPending, icon: Clock3 },
+    { label: "Applications under review", value: data?.appsReview, icon: Clock3 },
+    { label: "Approved applications", value: data?.appsApproved, icon: BadgeCheck },
+    { label: "Rejected applications", value: data?.appsRejected, icon: XCircle },
     { label: "Total opportunities", value: data?.total, icon: FileEdit },
     { label: "Published", value: data?.published, icon: CheckCircle2 },
     { label: "Drafts", value: data?.draft, icon: FileEdit },
@@ -99,6 +105,7 @@ function Dashboard() {
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <QuickLink to="/admin/applications" label="Review client applications" />
         <QuickLink to="/admin/opportunities" label="Manage opportunities" />
         <QuickLink to="/admin/categories" label="Manage categories" />
         <QuickLink to="/admin/companies" label="Manage companies" />
@@ -112,7 +119,12 @@ function QuickLink({
   to,
   label,
 }: {
-  to: "/admin/opportunities" | "/admin/categories" | "/admin/companies" | "/admin/enquiries";
+  to:
+    | "/admin/opportunities"
+    | "/admin/categories"
+    | "/admin/companies"
+    | "/admin/enquiries"
+    | "/admin/applications";
   label: string;
 }) {
   return (

@@ -30,10 +30,24 @@ function AuthPage() {
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
 
+  async function routeByRole() {
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData.user;
+    if (!user) return;
+    const { data: role } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    navigate({ to: role ? "/admin" : "/portal" });
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) void routeByRole();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   async function signIn(e: React.FormEvent) {
@@ -46,7 +60,7 @@ function AuthPage() {
       return;
     }
     toast.success("Signed in");
-    navigate({ to: "/admin" });
+    await routeByRole();
   }
 
   async function signUp(e: React.FormEvent) {
@@ -64,7 +78,7 @@ function AuthPage() {
     }
     if (data.session) {
       toast.success("Account created");
-      navigate({ to: "/admin" });
+      await routeByRole();
     } else {
       toast.success("Check your email to confirm your account.");
     }
@@ -78,7 +92,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/admin" });
+    await routeByRole();
   }
 
 
