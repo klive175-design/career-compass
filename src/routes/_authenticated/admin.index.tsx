@@ -10,6 +10,7 @@ import {
   FolderTree,
   Inbox,
   Star,
+  Users,
   XCircle,
 } from "lucide-react";
 
