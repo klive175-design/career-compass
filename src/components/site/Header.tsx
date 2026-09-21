@@ -56,6 +56,11 @@ export function Header() {
               <Search className="size-4" />
             </Link>
           </Button>
+          <Button asChild size="sm">
+            <Link to="/apply" search={{ job: "" }}>
+              Apply Now
+            </Link>
+          </Button>
           <Button asChild variant="outline" size="sm">
             <Link to="/auth">
               <Shield className="mr-1.5 size-4" /> Admin Login
@@ -86,6 +91,14 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              to="/apply"
+              search={{ job: "" }}
+              onClick={() => setOpen(false)}
+              className="mt-2 rounded-md bg-accent px-3 py-2.5 text-center text-sm font-semibold text-accent-foreground"
+            >
+              Apply Now
+            </Link>
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
