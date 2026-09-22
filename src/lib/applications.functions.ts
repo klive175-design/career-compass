@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
-const DEFAULT_ADMIN_EMAIL = "northstaragencyweb@gmail.com";
+const DEFAULT_ADMIN_EMAIL = "northstartravelingagency@gmail.com";
 
 type NotifyResult = { sent: boolean; reason?: string };
 
