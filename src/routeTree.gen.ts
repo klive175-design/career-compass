@@ -37,6 +37,7 @@ import { Route as AuthenticatedAdminApplicationsIdRouteImport } from './routes/_
 import { Route as AuthenticatedAdminOpportunitiesIndexRouteImport } from './routes/_authenticated/admin.opportunities.index'
 import { Route as AuthenticatedAdminOpportunitiesIdRouteImport } from './routes/_authenticated/admin.opportunities.$id'
 import { Route as AuthenticatedPortalApplicationsIdRouteImport } from './routes/_authenticated/portal.applications.$id'
+import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -188,6 +189,11 @@ const AuthenticatedPortalApplicationsIdRoute =
     path: '/applications/$id',
     getParentRoute: () => AuthenticatedPortalRoute,
   } as any)
+const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
+  id: '/api/public/media/$',
+  path: '/api/public/media/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/admin/applications/$id': typeof AuthenticatedAdminApplicationsIdRoute
   '/admin/opportunities/$id': typeof AuthenticatedAdminOpportunitiesIdRoute
   '/portal/applications/$id': typeof AuthenticatedPortalApplicationsIdRoute
+  '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/admin/applications/': typeof AuthenticatedAdminApplicationsIndexRoute
   '/admin/opportunities/': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
@@ -242,6 +249,7 @@ export interface FileRoutesByTo {
   '/admin/applications/$id': typeof AuthenticatedAdminApplicationsIdRoute
   '/admin/opportunities/$id': typeof AuthenticatedAdminOpportunitiesIdRoute
   '/portal/applications/$id': typeof AuthenticatedPortalApplicationsIdRoute
+  '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/admin/applications': typeof AuthenticatedAdminApplicationsIndexRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
@@ -273,6 +281,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/applications/$id': typeof AuthenticatedAdminApplicationsIdRoute
   '/_authenticated/admin/opportunities/$id': typeof AuthenticatedAdminOpportunitiesIdRoute
   '/_authenticated/portal/applications/$id': typeof AuthenticatedPortalApplicationsIdRoute
+  '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/_authenticated/admin/applications/': typeof AuthenticatedAdminApplicationsIndexRoute
   '/_authenticated/admin/opportunities/': typeof AuthenticatedAdminOpportunitiesIndexRoute
 }
@@ -304,6 +313,7 @@ export interface FileRouteTypes {
     | '/admin/applications/$id'
     | '/admin/opportunities/$id'
     | '/portal/applications/$id'
+    | '/api/public/media/$'
     | '/admin/applications/'
     | '/admin/opportunities/'
   fileRoutesByTo: FileRoutesByTo
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/admin/applications/$id'
     | '/admin/opportunities/$id'
     | '/portal/applications/$id'
+    | '/api/public/media/$'
     | '/admin/applications'
     | '/admin/opportunities'
   id:
@@ -361,6 +372,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/applications/$id'
     | '/_authenticated/admin/opportunities/$id'
     | '/_authenticated/portal/applications/$id'
+    | '/api/public/media/$'
     | '/_authenticated/admin/applications/'
     | '/_authenticated/admin/opportunities/'
   fileRoutesById: FileRoutesById
@@ -380,6 +392,7 @@ export interface RootRouteChildren {
   OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
   CompaniesIndexRoute: typeof CompaniesIndexRoute
   OpportunitiesIndexRoute: typeof OpportunitiesIndexRoute
+  ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -580,6 +593,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalApplicationsIdRouteImport
       parentRoute: typeof AuthenticatedPortalRoute
     }
+    '/api/public/media/$': {
+      id: '/api/public/media/$'
+      path: '/api/public/media/$'
+      fullPath: '/api/public/media/$'
+      preLoaderRoute: typeof ApiPublicMediaSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -657,6 +677,7 @@ const rootRouteChildren: RootRouteChildren = {
   OpportunitiesSlugRoute: OpportunitiesSlugRoute,
   CompaniesIndexRoute: CompaniesIndexRoute,
   OpportunitiesIndexRoute: OpportunitiesIndexRoute,
+  ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

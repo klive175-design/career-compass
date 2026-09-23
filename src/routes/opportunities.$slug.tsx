@@ -22,7 +22,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { OPPORTUNITY_SELECT, PUBLIC_STATUSES, categoryImage, formatDate } from "@/lib/site";
+import { OPPORTUNITY_SELECT, PUBLIC_STATUSES, categoryImage, formatDate, mediaUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/opportunities/$slug")({
   head: ({ params }) => ({
@@ -111,7 +111,7 @@ function OpportunityDetail() {
 
   const job = data;
   const images: { id: string; image_url: string; caption: string | null }[] = job.images.length
-    ? job.images
+    ? job.images.map((img) => ({ ...img, image_url: mediaUrl(img.image_url) ?? img.image_url }))
     : [{ id: "fallback", image_url: categoryImage(job.category?.slug), caption: null }];
   const current = images[Math.min(active, images.length - 1)]!;
 

@@ -44,8 +44,16 @@ const fallbackImages: Record<string, string> = {
 
 const gallery = [airHostess, airmen, groundCrew, caregivers, security, courier, delivery];
 
+/** Resolve a stored image value (storage path or external URL) to a displayable URL. */
+export function mediaUrl(path?: string | null) {
+  if (!path) return null;
+  if (/^https?:\/\//i.test(path) || path.startsWith("/") || path.startsWith("data:")) return path;
+  return `/api/public/media/${path}`;
+}
+
 export function categoryImage(slug?: string | null, custom?: string | null) {
-  if (custom) return custom;
+  const resolved = mediaUrl(custom);
+  if (resolved) return resolved;
   if (slug && fallbackImages[slug]) return fallbackImages[slug]!;
   if (!slug) return gallery[0]!;
   let sum = 0;
@@ -76,7 +84,7 @@ export function slugify(value: string) {
 }
 
 export const OPPORTUNITY_SELECT =
-  "*, category:categories(id,name,slug), company:companies(id,name,slug,logo,verified)";
+  "*, category:categories(id,name,slug), company:companies(id,name,slug,logo,verified), images:opportunity_images(id,image_url,display_order,is_primary)";
 
 export async function fetchSettings() {
   const { data } = await supabase.from("site_settings").select("*").limit(1).maybeSingle();
