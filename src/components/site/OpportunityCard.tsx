@@ -25,10 +25,15 @@ export type OpportunityRow = {
   category?: { name: string; slug: string } | null;
   company?: { name: string; slug: string; verified?: boolean | null } | null;
   primary_image?: string | null;
+  images?: { image_url: string; display_order?: number | null; is_primary?: boolean | null }[] | null;
 };
 
 export function OpportunityCard({ job }: { job: OpportunityRow }) {
-  const image = categoryImage(job.category?.slug, job.primary_image);
+  const gallery = [...(job.images ?? [])].sort(
+    (a, b) => (a.display_order ?? 0) - (b.display_order ?? 0),
+  );
+  const primary = gallery.find((i) => i.is_primary) ?? gallery[0];
+  const image = categoryImage(job.category?.slug, job.primary_image ?? primary?.image_url);
   const posted = formatDate(job.published_at ?? job.created_at);
   const closes = formatDate(job.deadline);
   const isNew =
