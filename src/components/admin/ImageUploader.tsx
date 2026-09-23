@@ -4,15 +4,10 @@ import { ImagePlus, Loader2, Trash2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { mediaUrl } from "@/lib/site";
 
 const ACCEPTED = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const MAX_BYTES = 5 * 1024 * 1024;
-
-export function mediaUrl(path?: string | null) {
-  if (!path) return null;
-  if (/^https?:\/\//i.test(path) || path.startsWith("/")) return path;
-  return `/api/public/media/${path}`;
-}
 
 export async function uploadSiteImage(file: File, folder: string) {
   if (!ACCEPTED.includes(file.type.toLowerCase())) {
