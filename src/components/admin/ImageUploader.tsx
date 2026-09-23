@@ -16,7 +16,8 @@ export async function uploadSiteImage(file: File, folder: string) {
   if (file.size > MAX_BYTES) throw new Error("Image must be 5MB or smaller");
 
   const ext = (file.name.split(".").pop() ?? "jpg").toLowerCase();
-  const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const safeFolder = folder.replace(/[^a-zA-Z0-9/_-]+/g, "-").replace(/-+$/g, "") || "misc";
+  const path = `${safeFolder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const { error } = await supabase.storage
     .from("site-images")
     .upload(path, file, { contentType: file.type, upsert: false });
