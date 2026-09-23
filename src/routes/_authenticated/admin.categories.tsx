@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchCategories, slugify } from "@/lib/site";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const Route = createFileRoute("/_authenticated/admin/categories")({
   component: AdminCategories,
@@ -111,8 +112,14 @@ function AdminCategories() {
             <Label htmlFor="c-desc">Description</Label>
             <Textarea id="c-desc" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="mt-1.5" />
           </div>
+          <ImageUploader
+            label="Category image"
+            folder={`categories/${form.slug || "new"}`}
+            value={form.image || null}
+            onChange={(path) => setForm({ ...form, image: path ?? "" })}
+          />
           <div>
-            <Label htmlFor="c-img">Image URL</Label>
+            <Label htmlFor="c-img">…or image URL</Label>
             <Input id="c-img" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="mt-1.5" placeholder="Leave empty to use a built-in image" />
           </div>
           <div className="grid grid-cols-2 gap-3">

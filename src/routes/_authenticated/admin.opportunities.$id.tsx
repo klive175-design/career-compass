@@ -26,8 +26,10 @@ import {
   fetchCategories,
   fetchCompanies,
   formatDate,
+  mediaUrl,
   slugify,
 } from "@/lib/site";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const Route = createFileRoute("/_authenticated/admin/opportunities/$id")({
   component: OpportunityEditor,
@@ -237,13 +239,19 @@ function OpportunityEditor() {
   });
 
   const imageMutation = useMutation({
-    mutationFn: async (action: { type: "add" | "remove" | "move"; id?: string; direction?: -1 | 1 }) => {
+    mutationFn: async (action: {
+      type: "add" | "remove" | "move";
+      id?: string;
+      path?: string;
+      direction?: -1 | 1;
+    }) => {
       if (action.type === "add") {
-        if (!imageUrl) throw new Error("Enter an image URL");
+        const value = action.path?.trim();
+        if (!value) throw new Error("Choose a file or enter an image URL");
         if (images.length >= 6) throw new Error("Maximum of 6 images");
         const { error } = await supabase.from("opportunity_images").insert({
           opportunity_id: recordId!,
-          image_url: imageUrl,
+          image_url: value,
           display_order: images.length,
           is_primary: images.length === 0,
         } as never);
@@ -437,14 +445,27 @@ function OpportunityEditor() {
           <Card>
             {recordId ? (
               <>
-                <div className="flex flex-wrap gap-2">
+                <div className="max-w-md">
+                  <ImageUploader
+                    label={images.length >= 6 ? "Maximum of 6 images reached" : "Upload a new image"}
+                    folder={`opportunities/${recordId}`}
+                    value={null}
+                    onChange={(path) => {
+                      if (path) imageMutation.mutate({ type: "add", path });
+                    }}
+                  />
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
                   <Input
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="https://… image URL"
+                    placeholder="…or paste an image URL"
                     className="max-w-md"
                   />
-                  <Button onClick={() => imageMutation.mutate({ type: "add" })} disabled={images.length >= 6}>
+                  <Button
+                    onClick={() => imageMutation.mutate({ type: "add", path: imageUrl })}
+                    disabled={images.length >= 6}
+                  >
                     Add image
                   </Button>
                 </div>
@@ -452,7 +473,7 @@ function OpportunityEditor() {
                 <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {images.map((img, index) => (
                     <div key={img.id} className="overflow-hidden rounded-lg border border-border">
-                      <img src={img.image_url} alt={img.caption ?? `Image ${index + 1}`} className="h-40 w-full object-cover" />
+                      <img src={mediaUrl(img.image_url) ?? img.image_url} alt={img.caption ?? `Image ${index + 1}`} className="h-40 w-full object-cover" />
                       <div className="flex items-center justify-between gap-1 p-2">
                         <span className="text-xs text-muted-foreground">
                           {index === 0 ? "Main image" : `Image ${index + 1}`}
