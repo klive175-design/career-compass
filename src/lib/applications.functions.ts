@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+const RESEND_API_URL = "https://api.resend.com/emails";
 const DEFAULT_ADMIN_EMAIL = "northstaragencyweb@gmail.com";
 
 type NotifyResult = { sent: boolean; reason?: string };
