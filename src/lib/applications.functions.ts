@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+const RESEND_API_URL = "https://api.resend.com/emails";
 const DEFAULT_ADMIN_EMAIL = "northstaragencyweb@gmail.com";
 
 type NotifyResult = { sent: boolean; reason?: string };
@@ -37,9 +37,8 @@ export const notifyAdminOfApplication = createServerFn({ method: "POST" })
 
     if (error || !app) return { sent: false, reason: "application_not_found" };
 
-    const lovableKey = process.env["LOVABLE_API_KEY"];
     const resendKey = process.env["RESEND_API_KEY"];
-    if (!lovableKey || !resendKey) {
+    if (!resendKey) {
       return { sent: false, reason: "email_not_configured" };
     }
 
@@ -67,12 +66,11 @@ export const notifyAdminOfApplication = createServerFn({ method: "POST" })
         }
       </div>`;
 
-    const response = await fetch(`${GATEWAY_URL}/emails`, {
+    const response = await fetch(RESEND_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${lovableKey}`,
-        "X-Connection-Api-Key": resendKey,
+        Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
         from: fromEmail,
