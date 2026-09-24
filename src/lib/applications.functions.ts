@@ -37,9 +37,8 @@ export const notifyAdminOfApplication = createServerFn({ method: "POST" })
 
     if (error || !app) return { sent: false, reason: "application_not_found" };
 
-    const lovableKey = process.env["LOVABLE_API_KEY"];
     const resendKey = process.env["RESEND_API_KEY"];
-    if (!lovableKey || !resendKey) {
+    if (!resendKey) {
       return { sent: false, reason: "email_not_configured" };
     }
 
