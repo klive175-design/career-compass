@@ -66,12 +66,11 @@ export const notifyAdminOfApplication = createServerFn({ method: "POST" })
         }
       </div>`;
 
-    const response = await fetch(`${GATEWAY_URL}/emails`, {
+    const response = await fetch(RESEND_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${lovableKey}`,
-        "X-Connection-Api-Key": resendKey,
+        Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
         from: fromEmail,
